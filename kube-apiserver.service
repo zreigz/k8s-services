@@ -7,11 +7,23 @@ After=etcd.service
 [Service]
 ExecStartPre=-/bin/mkdir -p /opt/kubernetes/bin
 ExecStart=/usr/bin/kube-apiserver \
-		--service-cluster-ip-range=10.0.0.1/24 --etcd-servers=http://127.0.0.1:4001 \
-		--min-request-timeout=300 --allow-privileged=true --v=2 \
-		--insecure-bind-address=0.0.0.0 --insecure-port=8080 \
-		--bind-address=0.0.0.0
-        
+  --etcd-servers=http://127.0.0.1:4001 \
+  --service-cluster-ip-range=10.0.0.1/24 \
+  --bind-address=10.132.0.2 \
+  --client-ca-file=/srv/kubernetes/ca.crt \
+  --tls-cert-file=/srv/kubernetes/apiserver.crt \
+  --tls-private-key-file=/srv/kubernetes/apiserver.key \
+  --secure-port=443 \
+  --allow-privileged=true \
+  --admission-control=NamespaceLifecycle,LimitRanger,ResourceQuota,ServiceAccount \
+  --runtime-config=rbac.authorization.k8s.io/v1alpha1,extensions/v1beta1/networkpolicies=true \
+  --authorization-mode=RBAC \
+  --authorization-rbac-super-user=${SUPER_USER_NAME} \
+  --requestheader-client-ca-file=/srv/kubernetes/ca.crt \
+  --requestheader-username-headers='X-Remote-User' \
+  --kubelet-certificate-authority=/srv/kubernetes/ca.crt \
+  --kubelet-https=true
+
         
 Restart=always
 RestartSec=10

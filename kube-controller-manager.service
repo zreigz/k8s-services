@@ -7,7 +7,11 @@ After=kube-apiserver.service
 [Service]
 ExecStartPre=-/bin/mkdir -p /opt/kubernetes/bin
 ExecStart=/usr/bin/kube-controller-manager \
-		--master=http://127.0.0.1:8080 --v=2 --address=0.0.0.0 
+   --kubeconfig=/srv/kubernetes/kubelet.cfg \
+   --cluster-signing-cert-file=/srv/kubernetes/ca.crt \
+   --cluster-signing-key-file=/srv/kubernetes/ca.key \
+   --service-account-private-key-file=/srv/kubernetes/apiserver.key \
+   --root-ca-file=/srv/kubernetes/ca.crt
         
 Restart=always
 RestartSec=10
