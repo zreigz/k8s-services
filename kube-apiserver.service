@@ -1,0 +1,21 @@
+[Unit]
+Description=Kubernetes API Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+Requires=etcd.service
+After=etcd.service
+
+[Service]
+ExecStartPre=-/bin/mkdir -p /opt/kubernetes/bin
+ExecStart=/usr/bin/kube-apiserver \
+		--service-cluster-ip-range=10.0.0.1/24 --etcd-servers=http://127.0.0.1:4001 \
+		--min-request-timeout=300 --allow-privileged=true --v=2 \
+		--insecure-bind-address=0.0.0.0 --insecure-port=8080 \
+		--bind-address=0.0.0.0
+        
+        
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,17 @@
+[Unit]
+Description=etcd key-value store
+Documentation=https://github.com/coreos/etcd
+After=network.target
+
+[Service]
+Type=notify
+Environment=ETCD_DATA_DIR=/var/lib/etcd
+Environment=ETCD_NAME=%m
+ExecStart=/usr/bin/etcd --listen-client-urls=http://127.0.0.1:2379,http://127.0.0.1:4001 --advertise-client-urls=http://localhost:2379,http://localhost:4001 --listen-peer-urls=http://0.0.0.0:2380
+Restart=always
+RestartSec=10s
+LimitNOFILE=40000
+
+[Install]
+WantedBy=multi-user.target
+

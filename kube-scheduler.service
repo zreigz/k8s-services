@@ -1,0 +1,16 @@
+[Unit]
+Description=Kubernetes Scheduler
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+Requires=kube-apiserver.service
+After=kube-apiserver.service
+
+[Service]
+ExecStart=/usr/bin/kube-scheduler \
+                --master=http://127.0.0.1:8080 --v=2
+        
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+

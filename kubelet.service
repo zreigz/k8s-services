@@ -1,0 +1,14 @@
+[Unit]
+Description=Kubelet
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+Requires=kube-apiserver.service
+After=kube-apiserver.service
+
+[Service]
+ExecStart=/usr/bin/kubelet \
+		--api-servers=http://127.0.0.1:8080 --cluster-dns=10.0.0.10 --cluster-domain=cluster.local --address=127.0.0.1 --hairpin-mode=hairpin-veth 
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
